@@ -8,22 +8,23 @@ import org.springframework.util.backoff.*;
 
 @Configuration
 public class WorkerConfig {
-  @Bean
-  SecurityFilterChain security(HttpSecurity h) throws Exception {
-    return h.csrf(c -> c.disable())
-        .authorizeHttpRequests(
-            a -> a.requestMatchers("/actuator/health").permitAll().anyRequest().denyAll())
-        .build();
-  }
-
-  @Bean
-  DefaultErrorHandler retryHandler() {
-    ExponentialBackOff b = new ExponentialBackOff(500, 2);
-    b.setMaxInterval(10000);
-    return new DefaultErrorHandler(
-        (record, error) -> {
-          throw new IllegalStateException("Unresolved batch must be replayed", error);
-        },
-        b);
-  }
-}
+	@Bean
+	SecurityFilterChain security(HttpSecurity h) throws Exception {
+		return h.csrf(c -> c.disable())
+		.authorizeHttpRequests(
+			a -> a.requestMatchers("/actuator/health").permitAll().anyRequest().denyAll())
+			.build();
+		}
+		
+		@Bean
+		DefaultErrorHandler retryHandler() {
+			ExponentialBackOff b = new ExponentialBackOff(500, 2);
+			b.setMaxInterval(10000);
+			return new DefaultErrorHandler(
+				(record, error) -> {
+					throw new IllegalStateException("Unresolved batch must be replayed", error);
+				},
+				b);
+			}
+		}
+		

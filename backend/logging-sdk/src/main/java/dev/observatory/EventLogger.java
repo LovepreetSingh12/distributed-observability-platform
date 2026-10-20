@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.*;
 import org.slf4j.MDC;
 
 public class EventLogger implements AutoCloseable {
-  public record Config(
+  	public record Config(
       URI endpoint,
       String apiKey,
       String applicationId,

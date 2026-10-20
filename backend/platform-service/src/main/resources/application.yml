@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  max-http-request-header-size: 16KB
+spring:
+  application:
+    name: platform-service
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/observatory?replicaSet=rs0}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        delivery.timeout.ms: 10000
+        request.timeout.ms: 5000
+        max.block.ms: 5000
+    consumer:
+      group-id: observatory-storage-v1
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      max-poll-records: 100
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      type: batch
+      ack-mode: manual_immediate
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    org.springframework.web: INFO
+    org.springframework.security: WARN
+    org.springframework.data.mongodb: INFO
+    org.mongodb.driver: WARN

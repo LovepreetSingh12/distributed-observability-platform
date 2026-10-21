@@ -6,8 +6,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SampleSecurity {
-  @Bean
-  SecurityFilterChain security(HttpSecurity h) throws Exception {
-    return h.csrf(c -> c.disable()).authorizeHttpRequests(a -> a.anyRequest().permitAll()).build();
-  }
+	@Bean
+	SecurityFilterChain security(HttpSecurity h) throws Exception {
+		return h.csrf(c -> c.disable()).authorizeHttpRequests(a -> a.anyRequest().permitAll()).build();
+	}
 }
